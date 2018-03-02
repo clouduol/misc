@@ -1,5 +1,6 @@
 #include<iostream>
 #include<cmath>
+#include<algorithm>
 
 using namespace std;
 
@@ -21,12 +22,14 @@ int main() {
 	int Min=0,Max=pow(4,10);
 	int ans[10],n;
 	for(n=Min; n<Max; n++){
-		int2array(i,ans);
+		int2array(n,ans);
+		if (islegal(ans)){
+			sync2stdout(ans);
+			break;
+		}
 	}
-	if(n==Max){
-		cout<<"no answer found"<<end;
-	}else
-		sync2stdout(ans);
+	if(n==Max)
+		cout<<"no answer found"<<endl;
 }
 
 void int2array(int n,int* ans){
@@ -49,34 +52,42 @@ void sync2stdout(int* ans){
 
 bool islegal(int* ans) {
 	//p2
+	//cout<<"p2"<<endl;
 	if(p2[ans[1]] != ans[4])
 		return false;
 	//p3
+	//cout<<"p3"<<endl;
 	int o1,o2,o3;
 	switch(ans[2]){
-		case 0: o1=1,o2=2,o3=3;
-		case 1: o1=0,o2=2,o3=3;
-		case 2: o1=0,o2=1,o3=3;
-		case 3: o1=0,o2=1,o3=2;
+		case 0: o1=1,o2=2,o3=3; break;
+		case 1: o1=0,o2=2,o3=3; break;
+		case 2: o1=0,o2=1,o3=3; break;
+		case 3: o1=0,o2=1,o3=2; break;
 	}
-	if(!( ans[p2[o1]] == ans[p2[o2]] && ans[p2[o2]] == ans[p2[o3]] ))
+	//cout<<ans[2]<<"\t"<<o1<<"\t"<<o2<<"\t"<<o3<<endl;
+	//cout<<ans[p3[ans[2]]]<<"\t"<<ans[p3[o1]]<<"\t"<<ans[p3[o2]]<<"\t"<<ans[p3[o3]]<<endl;
+	if(!( ans[p3[o1]] == ans[p3[o2]] && ans[p3[o2]] == ans[p3[o3]] ))
 		return false;
-	if( ans[p2[ans[2]]] == ans[p2[o1]]  )
+	if( ans[p3[ans[2]]] == ans[p3[o1]]  )
 		return false;
 	
 	//p4
-	if( ans[p3[ans[3]][0]] != ans[p3[ans[3]][1]]  )
+	//cout<<"p4"<<endl;
+	if( ans[p4[ans[3]][0]] != ans[p4[ans[3]][1]]  )
 		return false;
 	
 	//p5
+	//cout<<"p5"<<endl;
 	if( ans[4] != ans[p5[ans[4]]]  )
 		return false;
 	
 	//p6
-	if(!( ans[7] == ans[p6[ans[5]][0]] && ans[7] == ans[p6[ans[5]][1]]  ))
+	//cout<<"p6"<<endl;
+	if(!( ans[7] == ans[p6[ans[5]][0]] && ans[7] == ans[p6[ans[5]][1]] ))
 		return false;
 	
 	//p7
+	//cout<<"p7"<<endl;
 	int c[4]={0,0,0,0};
 	for(int i=0;i<10;i++){
 		c[ans[i]]++;
@@ -85,10 +96,12 @@ bool islegal(int* ans) {
 		return false;
 	
 	//p8
+	//cout<<"p8"<<endl;
 	if( abs(ans[0]-ans[p8[ans[7]]])==1  )
 		return false;
 	
 	//p9
+	//cout<<"p9"<<endl;
 	int t1=0,t2=0;
 	if( ans[0]==ans[5]  )
 		t1=1;
@@ -98,9 +111,17 @@ bool islegal(int* ans) {
 		t2=1;
 	else
 		t2=-1;
+	if(t1*t2==1)
+		return false;
 	
 	//p10
-	if( max(c[0],c[1],c[2],c[3])-min(c[0],c[1],c[2],c[3])!=p10[ans[9]]  )
+	//cout<<"p10"<<endl;
+	int m1=0,m2=10;
+	for(int i=0;i<4;i++){
+		m1=max(m1,c[i]);
+		m2=min(m2,c[i]);
+	}
+	if( m1-m2 != p10[ans[9]]  )
 		return false;
 	
 	return true;
