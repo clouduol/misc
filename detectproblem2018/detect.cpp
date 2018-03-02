@@ -21,15 +21,18 @@ int p10[4]={3,2,4,1};
 int main() {
 	int Min=0,Max=pow(4,10);
 	int ans[10],n;
+	int count=0;
 	for(n=Min; n<Max; n++){
 		int2array(n,ans);
 		if (islegal(ans)){
 			sync2stdout(ans);
-			break;
+			count++;
 		}
 	}
-	if(n==Max)
+	if(count==0)
 		cout<<"no answer found"<<endl;
+	else
+		cout<<"count: "<<count<<endl;
 }
 
 void int2array(int n,int* ans){
